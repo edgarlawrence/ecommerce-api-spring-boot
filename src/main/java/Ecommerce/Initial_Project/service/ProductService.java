@@ -39,6 +39,7 @@ public class ProductService {
                         .description(product.getDescription())
                         .price(product.getPrice())
                         .stock(product.getStock())
+                        .amount(product.getAmount())
                         .isDiscount(product.getIsDiscount())
                         .discountPrice(product.getDiscountPrice())
                         .productCategoryList(product.getProductCategoryList().stream()
@@ -58,6 +59,7 @@ public class ProductService {
         product.setTitle(requestDTO.getTitle());
         product.setDescription(requestDTO.getDesc());
         product.setPrice(requestDTO.getPrice());
+        product.setAmount(requestDTO.getAmount());
         product.setStock(requestDTO.getStock());
         product.setIsDiscount(requestDTO.getIsDiscount());
         product.setDiscountPrice(requestDTO.getDiscountPrice());
@@ -87,6 +89,7 @@ public class ProductService {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .stock(product.getStock())
+                .amount(product.getAmount())
                 .isDiscount(product.getIsDiscount())
                 .discountPrice(product.getDiscountPrice())
                 .productCategoryList(productCategories.stream()
@@ -106,6 +109,7 @@ public class ProductService {
                 .title(product.getTitle())
                 .description(product.getDescription())
                 .price(product.getPrice())
+                .amount(product.getAmount())
                 .isDiscount(product.getIsDiscount())
                 .discountPrice(product.getDiscountPrice())
                 .productCategoryList(product.getProductCategoryList().stream()
@@ -123,6 +127,7 @@ public class ProductService {
         product.setDescription(request.getDesc());
         product.setPrice(request.getPrice());
         product.setStock(request.getStock());
+        product.setAmount(request.getAmount());
         product.setIsDiscount(request.getIsDiscount());
         product.setDiscountPrice(request.getDiscountPrice());
 
@@ -151,13 +156,15 @@ public class ProductService {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .stock(product.getStock())
+                .amount(product.getAmount())
                 .isDiscount(product.getIsDiscount())
                 .discountPrice(product.getDiscountPrice())
                 .productCategoryList(productCategories.stream()
                         .map(prodCat ->  ProductCategoryResponseDTO.builder()
                                 .categoryId(prodCat.getCategory().getId())
                                 .categoryTitle(prodCat.getCategory().getTitle())
-                                .build()).collect(Collectors.toList())).build();
+                                .build())
+                        .collect(Collectors.toList())).build();
     }
 
     public void deleteProduct(String id) {

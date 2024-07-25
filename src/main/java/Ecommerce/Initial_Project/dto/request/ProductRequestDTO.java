@@ -19,6 +19,7 @@ public class ProductRequestDTO {
     private String title;
     private String desc;
     private Long price;
+    private Long amount;
     private Long stock;
     private Boolean isDiscount;
     private Long discountPrice;

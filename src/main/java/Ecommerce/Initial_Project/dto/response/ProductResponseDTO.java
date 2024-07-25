@@ -27,6 +27,8 @@ public class ProductResponseDTO {
 
     private Long stock;
 
+    private Long amount;
+
     private Boolean isDiscount;
 
     private Long discountPrice;

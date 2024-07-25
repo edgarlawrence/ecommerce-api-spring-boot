@@ -26,10 +26,15 @@ public class Product {
 
     private Long stock;
 
+    private Long amount;
+
     private Boolean isDiscount;
 
     private Long discountPrice;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductCategory> productCategoryList;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductCart> productCartList;
 }
