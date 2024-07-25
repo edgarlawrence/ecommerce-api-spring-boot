@@ -24,4 +24,8 @@ public class CartPayment {
     @ManyToOne
     @JoinColumn(name = "payment_id")
     private Payment payment;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 }

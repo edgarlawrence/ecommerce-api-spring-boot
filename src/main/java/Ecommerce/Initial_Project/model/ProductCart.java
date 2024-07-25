@@ -27,6 +27,10 @@ public class ProductCart {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
+    @ManyToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
