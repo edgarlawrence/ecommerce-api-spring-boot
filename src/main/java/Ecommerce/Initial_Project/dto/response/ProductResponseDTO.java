@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,6 +33,8 @@ public class ProductResponseDTO {
     private Boolean isDiscount;
 
     private Long discountPrice;
+
+    private String imagePath;
 
     private List<ProductCategoryResponseDTO> productCategoryList;
 }

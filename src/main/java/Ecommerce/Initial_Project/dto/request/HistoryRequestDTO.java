@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -12,9 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentRequestDTO {
+public class HistoryRequestDTO {
     private String id;
-    private Boolean paymentComplete;
-    private MultipartFile image;
-    private List<CartPaymentRequestDTO> cartPaymentRequestList;
+    private List<PaymentHistoryRequestDTO> paymentHistoryList;
 }

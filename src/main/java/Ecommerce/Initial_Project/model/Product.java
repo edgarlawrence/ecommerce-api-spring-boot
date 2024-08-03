@@ -32,6 +32,8 @@ public class Product {
 
     private Long discountPrice;
 
+    private String imagePath;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductCategory> productCategoryList;
 

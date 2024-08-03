@@ -13,15 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "payment")
-public class Payment {
+@Table(name = "history")
+public class History {
     @Id
-    public String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
 
-    public Boolean paymentComplete;
-
-    public String imagePath;
-
-    @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartPayment> cartPaymentList;
+    @OneToMany(mappedBy = "history", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<PaymentHistory> paymentHistoryList;
 }

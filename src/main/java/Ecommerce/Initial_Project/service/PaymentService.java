@@ -12,8 +12,14 @@ import Ecommerce.Initial_Project.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +37,22 @@ public class PaymentService {
     @Autowired
     private CartRepository cartRepository;
 
+    private String saveImageFile(MultipartFile file) throws IOException {
+        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/images";
+        String fileName = file.getOriginalFilename();
+        Path filePath = Paths.get(uploadDir, fileName);
+        Files.createDirectories(filePath.getParent());
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        return filePath.toString();
+    }
+
     public List<PaymentResponseDTO> getAll() {
         List<Payment> payments = paymentRepository.findAll();
 
         return payments.stream().map(payment -> PaymentResponseDTO.builder()
                         .id(payment.getId())
                         .paymentComplete(payment.getPaymentComplete())
+                        .image(payment.getImagePath())
                         .cartPaymentResponseList(payment.getCartPaymentList().stream()
                                 .map(cartPayment -> CartPaymentResponseDTO.builder()
                                         .cartId(cartPayment.getCart().getId())
@@ -66,6 +82,16 @@ public class PaymentService {
         payment.setId(UUID.randomUUID().toString());
         payment.setPaymentComplete(requestDTO.getPaymentComplete());
 
+        MultipartFile imageFile = requestDTO.getImage();
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                String imagePath = saveImageFile(imageFile);
+                payment.setImagePath(imagePath);
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error saving image file", e);
+            }
+        }
+
         List<CartPayment> cartPaymentList = new ArrayList<>();
         for (CartPaymentRequestDTO request : requestDTO.getCartPaymentRequestList()) {
             Cart cart = cartRepository.findById(request.getCartId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "cart was not founded"));
@@ -85,6 +111,7 @@ public class PaymentService {
         return PaymentResponseDTO.builder()
                 .id(payment.getId())
                 .paymentComplete(payment.getPaymentComplete())
+                .image(payment.getImagePath())
                 .cartPaymentResponseList(payment.getCartPaymentList().stream()
                         .map(cartPayment -> CartPaymentResponseDTO.builder()
                                 .cartId(cartPayment.getCart().getId())
