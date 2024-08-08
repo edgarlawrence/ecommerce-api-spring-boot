@@ -1,14 +1,10 @@
 package Ecommerce.Initial_Project.controller;
 
-import Ecommerce.Initial_Project.dto.request.CategoryRequestDTO;
 import Ecommerce.Initial_Project.dto.request.ProductRequestDTO;
-import Ecommerce.Initial_Project.dto.response.CategoryResponseDTO;
 import Ecommerce.Initial_Project.dto.response.ProductResponseDTO;
 import Ecommerce.Initial_Project.service.ProductService;
-import Ecommerce.Initial_Project.util.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,25 +17,12 @@ import java.util.List;
 
 @RestController
 public class ProductController {
+
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private JwtService jwtService;
-
-    @GetMapping(path = "/api/product", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ProductResponseDTO>> getAll(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader) {
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String token = authorizationHeader.substring(7);
-            // Validate the token (optional)
-            if (jwtService.isTokenValid(token)) {
-                // Token is valid; you can perform any additional logic if needed
-            } else {
-                // Token is invalid; you might want to log this or handle it differently
-            }
-        }
-
-        // Fetch and return the product data regardless of token presence/validity
+    @GetMapping(path = "/api/product")
+    public ResponseEntity<List<ProductResponseDTO>> getAll() {
         var responses = productService.getAll();
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
