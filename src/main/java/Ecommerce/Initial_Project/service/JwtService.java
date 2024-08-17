@@ -1,13 +1,12 @@
-package Ecommerce.Initial_Project.util;
+package Ecommerce.Initial_Project.service;
 
-import Ecommerce.Initial_Project.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +23,16 @@ public class JwtService {
 
     @Value("${security.jwt.expiration-time}")
     private long jwtExpiration;
+
+    // This method generates a JWT token with the email as the subject
+    public String generateToken(User userDetails) {
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())  // Use email as the JWT subject
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -64,12 +73,6 @@ public class JwtService {
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
-    }
-
-    public boolean isTokenValid(String token) {
-        final String username = extractUsername(token);
-        System.out.println("Token Validity Check - Username: " + username); // Add logging
-        return (username != null && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token) {

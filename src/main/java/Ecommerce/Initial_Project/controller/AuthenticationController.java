@@ -3,19 +3,17 @@ package Ecommerce.Initial_Project.controller;
 import Ecommerce.Initial_Project.dto.request.UserLoginRequestDTO;
 import Ecommerce.Initial_Project.dto.request.UserRegisterRequestDTO;
 import Ecommerce.Initial_Project.dto.response.LoginResponse;
-import Ecommerce.Initial_Project.dto.response.UserLoginResponseDTO;
 import Ecommerce.Initial_Project.model.User;
-import Ecommerce.Initial_Project.repository.UserRepository;
 import Ecommerce.Initial_Project.service.AuthenticationService;
-import Ecommerce.Initial_Project.util.JwtService;
+import Ecommerce.Initial_Project.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
     @Autowired
@@ -24,17 +22,12 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @Autowired
-    private UserRepository userRepository;
-
-
     @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody UserRegisterRequestDTO registerUserDto) {
         User registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody UserLoginRequestDTO loginUserDto) {
@@ -43,15 +36,9 @@ public class AuthenticationController {
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
         LoginResponse loginResponse = new LoginResponse();
-
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
 
         return ResponseEntity.ok(loginResponse);
-    }
-
-    @GetMapping(path = "/test")
-    public ResponseEntity<?> testData() {
-        return ResponseEntity.ok("Custom message: test successful");
     }
 }

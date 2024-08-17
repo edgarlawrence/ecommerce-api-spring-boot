@@ -21,10 +21,10 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String fullname;
     private String username;
     private String email;
     private String password;
-    private String fullname;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
