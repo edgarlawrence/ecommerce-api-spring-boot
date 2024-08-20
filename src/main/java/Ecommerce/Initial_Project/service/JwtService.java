@@ -24,8 +24,8 @@ public class JwtService {
     @Value("${security.jwt.expiration-time}")
     private long jwtExpiration;
 
-    // This method generates a JWT token with the email as the subject
-    public String generateToken(User userDetails) {
+    // Ensure that the token is generated with the user's email as the subject
+    public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())  // Use email as the JWT subject
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -33,6 +33,7 @@ public class JwtService {
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -43,7 +44,7 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateTokenWithClaims(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 

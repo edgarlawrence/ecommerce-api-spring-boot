@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UserRoleRequestDTO {
-    private String userId;
+    private Integer userId;
 
-    private String roleId;
+    private Integer roleId;
 }

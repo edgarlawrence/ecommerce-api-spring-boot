@@ -91,7 +91,7 @@ public class ProductService {
         }
 
         List<ProductCategory> productCategories = new ArrayList<>();
-        for(ProductCategoryRequestDTO requestCategory : requestDTO.getProductCategoryList()) {
+        for (ProductCategoryRequestDTO requestCategory : requestDTO.getProductCategoryList()) {
             Category category = categoryRepository.findById(requestCategory.getCategoryId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "category not found"));
             ProductCategory productCategory = new ProductCategory();
@@ -201,6 +201,7 @@ public class ProductService {
                         .collect(Collectors.toList()))
                 .build();
     }
+
     public void deleteProduct(String id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Product Are not found"));
 

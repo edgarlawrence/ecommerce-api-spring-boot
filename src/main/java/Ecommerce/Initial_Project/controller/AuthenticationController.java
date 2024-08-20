@@ -3,6 +3,7 @@ package Ecommerce.Initial_Project.controller;
 import Ecommerce.Initial_Project.dto.request.UserLoginRequestDTO;
 import Ecommerce.Initial_Project.dto.request.UserRegisterRequestDTO;
 import Ecommerce.Initial_Project.dto.response.LoginResponse;
+import Ecommerce.Initial_Project.dto.response.UserSignUpResponseDTO;
 import Ecommerce.Initial_Project.model.User;
 import Ecommerce.Initial_Project.service.AuthenticationService;
 import Ecommerce.Initial_Project.service.JwtService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RestController
 public class AuthenticationController {
     @Autowired
@@ -23,8 +24,8 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody UserRegisterRequestDTO registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
+    public ResponseEntity<UserSignUpResponseDTO> register(@RequestBody UserRegisterRequestDTO registerUserDto) {
+        var registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
     }

@@ -14,7 +14,11 @@ import java.util.List;
 public class UserRegisterRequestDTO {
     private String email;
 
+    private String username;
+
     private String password;
 
-    private String fullName;
+    private String fullname;
+
+    private List<UserRoleRequestDTO> userRoleRequestDTOList;
 }
